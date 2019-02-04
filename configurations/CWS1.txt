@@ -6,4 +6,13 @@ no ip domain-lookup
 service password-encryption
 enable secret Passw0rd!
 int f1/0/1
-ip add 192.168.0.2
+ip add 192.168.0.2 255.255.255.0
+exit
+line console 0
+password Passw0rd!
+login
+line vty 0 4
+password Passw0rd!
+login local
+exit
+username admin password cisco
