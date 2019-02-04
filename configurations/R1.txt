@@ -1,0 +1,40 @@
+! Config Router R1
+! 
+hostname R1
+!Empêche
+no ip domain-lookup
+ip domain-name educon.local
+! crypto key generate rsa 
+! 2048
+
+int f0/1
+ip add 193.190.65.84 255.255.255.0
+ip nat outside
+no shut
+exit
+
+int f0/0
+ip add 192.168.0.1 255.255.255.0
+no shut
+ip nat inside
+exit
+
+ip nat pool ovrld 193.190.64.84 193.190.65.84 prefix 24
+ip nat inside source list 1 pool ovrld overload
+no access-list 1
+access-list 1 permit 192.168.0.0 0.0.0.255
+
+ip route 0.0.0.0 0.0.0.0 193.190.65.81
+ip default-gateway 193.190.65.81
+
+service password-encryption
+enable secret Passw0rd!
+username admin password cisco
+line console 0
+password Passw0rd!
+login 
+line vty 0 4
+password Passw0rd!
+login local
+transport input ssh
+exit

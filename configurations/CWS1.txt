@@ -1,0 +1,9 @@
+! CSW 1
+! 
+hostname CSW1
+ip domain-name educon.local
+no ip domain-lookup
+service password-encryption
+enable secret Passw0rd!
+int f1/0/1
+ip add 192.168.0.2
