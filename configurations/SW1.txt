@@ -1,0 +1,60 @@
+! SW1
+!
+hostname SW1
+ip domain-name educon.local
+no ip domain-lookup
+service password-encryption
+crypto key generate rsa
+2048
+username admin password cisco
+enable secret password
+
+ip default-gateway 192.168.1.254
+
+! VLANS
+vlan 5
+name server
+vlan 10
+name administration
+vlan 20
+name it
+vlan 30
+name comptabilite
+vlan 40
+name formation
+vlan 50
+name vente
+vlan 60
+name marketing
+exit
+
+
+! Lines
+line console 0
+password password
+login
+line vty 0 4
+password password
+login local
+transport input ssh
+exit
+
+! Interfaces
+int vlan 1
+ip add 192.168.1.242 255.255.255.0
+no shut
+exit
+
+! Etherchannel
+port-channel load-balance src-ip
+int port-channel 1
+sw trunk encapsulation dot1Q
+sw mode trunk
+sw trunk native vlan 1
+int range f0/23-24
+sw trunk encapsulation dot1Q
+sw mode trunk
+sw trunk native vlan 1
+channel-protocol lacp
+channel-group 1 mode active
+exit

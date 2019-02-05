@@ -1,7 +1,6 @@
 ! Config Router R1
 ! 
 hostname R1
-!Empêche
 no ip domain-lookup
 ip domain-name educon.local
 ! crypto key generate rsa 
@@ -19,7 +18,7 @@ no shut
 ip nat inside
 exit
 
-ip nat pool ovrld 193.190.64.84 193.190.65.84 prefix 24
+ip nat pool ovrld 193.190.65.84 193.190.65.84 prefix 24
 ip nat inside source list 1 pool ovrld overload
 no access-list 1
 access-list 1 permit 192.168.0.0 0.0.0.255

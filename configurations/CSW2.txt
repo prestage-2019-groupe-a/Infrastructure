@@ -1,0 +1,134 @@
+! CSW2
+!
+hostname CSW2
+ip routing
+ip domain-name educon.local
+no ip domain-lookup
+service password-encryption
+crypto key generate rsa
+2048
+username admin password cisco
+enable secret password
+
+! VLANS
+vlan 5
+name server
+vlan 10
+name administration
+vlan 20
+name it
+vlan 30
+name comptabilite
+vlan 40
+name formation
+vlan 50
+name vente
+vlan 60
+name marketing
+exit
+
+! Lines
+line console 0
+password password
+login
+line vty 0 4
+password password
+login local
+transport input ssh
+exit
+
+! STP
+spanning-tree mode post
+spanning-tree vlan 10 root secondary
+spanning-tree vlan 20 root secondary
+spanning-tree vlan 30 root secondary
+spanning-tree vlan 40 root secondary
+spanning-tree vlan 50 root secondary
+spanning-tree vlan 60 root secondary
+
+! Interfaces
+int vlan 10
+ip add 192.168.10.253 255.255.255.0
+standby 1 ip 192.168.10.254
+standby 1 preempt
+standby 1 track f0/20
+standby 1 track f0/21
+standby 1 track f0/22
+standby 1 track f0/23
+standby 1 track f0/24
+no shut
+int vlan 20
+ip add 192.168.20.253 255.255.255.0
+standby 1 ip 192.168.20.254
+standby 1 preempt
+standby 1 track f0/20
+standby 1 track f0/21
+standby 1 track f0/22
+standby 1 track f0/23
+standby 1 track f0/24
+no shut
+int vlan 30
+ip add 192.168.30.253 255.255.255.0
+standby 1 ip 192.168.30.254
+standby 1 preempt
+standby 1 track f0/20
+standby 1 track f0/21
+standby 1 track f0/22
+standby 1 track f0/23
+standby 1 track f0/24
+no shut
+int vlan 40
+ip add 192.168.40.253 255.255.255.0
+standby 1 ip 192.168.40.254
+standby 1 preempt
+standby 1 track f0/20
+standby 1 track f0/21
+standby 1 track f0/22
+standby 1 track f0/23
+standby 1 track f0/24
+no shut
+int vlan 50
+ip add 192.168.50.253 255.255.255.0
+standby 1 ip 192.168.50.254
+standby 1 preempt
+standby 1 track f0/20
+standby 1 track f0/21
+standby 1 track f0/22
+standby 1 track f0/23
+standby 1 track f0/24
+no shut
+int vlan 60
+ip add 192.168.60.253 255.255.255.0
+standby 1 ip 192.168.60.254
+standby 1 preempt
+standby 1 track f0/20
+standby 1 track f0/21
+standby 1 track f0/22
+standby 1 track f0/23
+standby 1 track f0/24
+int f0/1
+no switchport
+ip add 192.168.0.253 255.255.255.0
+standby 2 ip 192.168.0.254
+standby 2 preempt
+standby 2 track f0/1
+no shut
+
+exit
+
+! etherchannel
+port-channel load-balance src-ip
+int port-channel 1
+sw trunk encapsulation dot1Q
+sw mode trunk
+sw trunk native vlan 1
+int range f0/20-21
+sw trunk encapsulation dot1Q
+sw mode trunk 
+sw trunk native vlan 1
+channel-protocol lacp
+channel-group 1 mode active
+exit
+
+
+
