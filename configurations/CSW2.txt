@@ -50,6 +50,16 @@ spanning-tree vlan 99 root secondary
 
 
 ! Interfaces
+int vlan 5
+ip add 192.168.5.253 255.255.255.0
+standby 1 ip 192.168.5.254
+standby 1 preempt
+standby 1 track f0/20
+standby 1 track f0/21
+standby 1 track f0/22
+standby 1 track f0/23
+standby 1 track f0/24
+no shut
 int vlan 10
 ip add 192.168.10.253 255.255.255.0
 standby 1 ip 192.168.10.254
@@ -129,8 +139,10 @@ standby 2 ip 192.168.0.254
 standby 2 preempt
 standby 2 track f0/1
 no shut
-
 exit
+
+! ROUTAGE
+ip route 0.0.0.0 0.0.0.0 192.168.0.251 200
 
 ! etherchannel
 port-channel load-balance src-ip

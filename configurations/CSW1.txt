@@ -50,6 +50,17 @@ spanning-tree vlan 99 root primary
 
 
 ! Interfaces
+int vlan 5
+ip add 192.168.5.252 255.255.255.0
+standby 1 ip 192.168.5.254
+standby 1 preempt
+standby 1 priority 105
+standby 1 track f1/0/20
+standby 1 track f1/0/21
+standby 1 track f1/0/22
+standby 1 track f1/0/23
+standby 1 track f1/0/24
+no shut
 int vlan 10
 ip add 192.168.10.252 255.255.255.0
 standby 1 ip 192.168.10.254
@@ -144,6 +155,9 @@ sw trunk encapsulation dot1Q
 sw mode trunk
 sw trunk native vlan 99
 exit
+
+! ROUTAGE
+ip route 0.0.0.0 0.0.0.0 192.168.0.251 200
 
 ! etherchannel
 port-channel load-balance src-ip
