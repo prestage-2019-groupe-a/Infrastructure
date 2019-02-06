@@ -25,6 +25,7 @@ vlan 50
 name vente
 vlan 60
 name marketing
+vlan 99
 exit
 
 ! Lines
@@ -45,6 +46,8 @@ spanning-tree vlan 30 root primary
 spanning-tree vlan 40 root primary
 spanning-tree vlan 50 root primary
 spanning-tree vlan 60 root primary
+spanning-tree vlan 99 root primary
+
 
 ! Interfaces
 int vlan 10
@@ -118,6 +121,16 @@ standby 1 track f1/0/22
 standby 1 track f1/0/23
 standby 1 track f1/0/24
 no shut
+int vlan 99
+ip add 192.168.99.252 255.255.255.0
+standby 1 ip 192.168.99.254
+standby 1 preempt
+standby 1 priority 105
+standby 1 track f1/0/20
+standby 1 track f1/0/21
+standby 1 track f1/0/22
+standby 1 track f1/0/23
+standby 1 track f1/0/24
 int f1/0/1
 no switchport
 ip add 192.168.0.252 255.255.255.0
@@ -126,7 +139,10 @@ standby 2 preempt
 standby 2 priority 105
 standby 2 track f1/0/1
 no shut
-
+int range f1/0/23-24
+sw trunk encapsulation dot1Q
+sw mode trunk
+sw trunk native vlan 99
 exit
 
 ! etherchannel
@@ -134,11 +150,11 @@ port-channel load-balance src-ip
 int port-channel 1
 sw trunk encapsulation dot1Q
 sw mode trunk
-sw trunk native vlan 1
+sw trunk native vlan 99
 int range f1/0/20-21
 sw trunk encapsulation dot1Q
 sw mode trunk 
-sw trunk native vlan 1
+sw trunk native vlan 99
 channel-protocol lacp
 channel-group 1 mode active
 exit

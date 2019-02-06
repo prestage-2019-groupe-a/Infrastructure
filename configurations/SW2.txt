@@ -9,7 +9,7 @@ crypto key generate rsa
 username admin password cisco
 enable secret password
 
-ip default-gateway 192.168.1.254
+ip default-gateway 192.168.99.254
 
 ! VLANS
 vlan 5
@@ -26,6 +26,7 @@ vlan 50
 name vente
 vlan 60
 name marketing
+vlan 99
 exit
 
 
@@ -40,21 +41,22 @@ transport input ssh
 exit
 
 ! Interfaces
-int vlan 1
-ip add 192.168.1.243 255.255.255.0
+int vlan 99
+ip add 192.168.99.243 255.255.255.0
 no shut
+int range f0/1-2
+sw mode trunk
+sw trunk native vlan 99
 exit
 
 ! Etherchannel
 port-channel load-balance src-ip
 int port-channel 1
-sw trunk encapsulation dot1Q
 sw mode trunk
-sw trunk native vlan 1
+sw trunk native vlan 99
 int range f0/23-24
-sw trunk encapsulation dot1Q
 sw mode trunk
-sw trunk native vlan 1
+sw trunk native vlan 99
 channel-protocol lacp
 channel-group 1 mode active
 exit
