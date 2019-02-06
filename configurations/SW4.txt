@@ -1,0 +1,45 @@
+! SW3
+!
+hostname SW3
+ip domain-name educon.local
+no ip domain-lookup
+service password-encryption
+crypto key generate rsa
+2048
+username admin password cisco
+enable secret password
+
+ip default-gateway 192.168.0.254
+
+! VLAN
+vlan 2
+name WAN
+vlan 3
+name LAN
+
+! Lines
+line console 0
+password password
+login
+line vty 0 4
+password password
+login local
+transport input ssh
+exit
+
+! Interfaces
+int vlan 3
+ip add 192.168.0.242 255.255.255.0
+no shut
+
+int f0/1
+switchport mode trunk
+switchport trunk allowed vlan 2-3
+
+int f0/24
+switchport access vlan 2
+switchport mode access
+
+int range f0/2-3
+switchport access vlan 3
+switchport mode access
