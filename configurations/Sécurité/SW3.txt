@@ -1,0 +1,39 @@
+﻿service password-encryption
+enable secret Eph3c2019!
+no enable password
+!no service password-recovery
+no username admin password cisco
+username admin secret Eph3c2019!
+ip ssh time-out 15
+ip ssh authentication-retries 5
+
+! Lines
+access-list 20 permit 192.168.20.0 0.0.0.255
+service tcp-keepalives-in
+line console 0
+password Eph3c2019!
+login
+line vty 0 4
+password Eph3c2019!
+login local
+access-class 20 in
+exec-timeout 5
+exit
+
+!ésactivation des interfaces non utilisée
+int range f0/4-22
+shutdown
+exit
+
+spanning-tree bpduguard default
+spanning-tree loopguard default
+spanning-tree portfast default
+spanning-tree uplinkfast
+spanning-tree backbonefast
+
+int range f0/4-22
+spanning-tree bpduguard enable
+spanning-tree portfast
+
+int range f0/1-24
+spanning-tree loopguard enable
